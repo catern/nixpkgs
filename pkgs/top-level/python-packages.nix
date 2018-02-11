@@ -420,6 +420,8 @@ in {
 
   aioconsole = callPackage ../development/python-modules/aioconsole { };
 
+  aiomonitor = callPackage ../development/python-modules/aiomonitor { };
+
   aiodns = callPackage ../development/python-modules/aiodns { };
 
   aiofiles = callPackage ../development/python-modules/aiofiles { };
