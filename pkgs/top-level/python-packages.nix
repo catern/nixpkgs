@@ -450,6 +450,8 @@ in {
 
   serversyncstorage = callPackage ../development/python-modules/serversyncstorage {};
 
+  sfork = callPackage ../development/python-modules/sfork { sfork = pkgs.sfork; };
+
   simpleeval = callPackage ../development/python-modules/simpleeval { };
 
   sip = callPackage ../development/python-modules/sip { };

@@ -12967,6 +12967,8 @@ with pkgs;
 
   s6-rc = callPackage ../tools/system/s6-rc { };
 
+  sfork = callPackage ../development/libraries/sfork { };
+
   supervise = callPackage ../tools/system/supervise { };
 
   spamassassin = callPackage ../servers/mail/spamassassin {
