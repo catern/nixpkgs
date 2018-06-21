@@ -424,6 +424,8 @@ in {
     then ../development/python-modules/python3-openid
     else ../development/python-modules/python-openid) { };
 
+  python-prctl = callPackage ../development/python-modules/python-prctl { };
+
   python-sql = callPackage ../development/python-modules/python-sql { };
 
   python-stdnum = callPackage ../development/python-modules/python-stdnum { };
