@@ -1,0 +1,51 @@
+--- ./scripts/onload_install	2018-11-04 21:19:14.101058220 -0500
++++ ./scripts/onload_install	2018-11-05 08:00:35.492148359 -0500
+@@ -313,12 +313,15 @@
+   try $do cd "$TOP/scripts"
+   install_x onload_tool "$i_sbin/onload_tool"
+   install_x onload "$i_usrbin/onload"
++  sed -i "s@/usr/libexec/onload/@$i_usrlibexec/@" "$i_usrbin/onload"
+   install_x sfcirqaffinity "$i_usrsbin/sfcirqaffinity"
+   install_x onload_misc/onload_init_rc "$i_etc/init.d/openonload"
+   install_f onload_misc/onload_sysconfig "$i_etc/sysconfig/openonload"
+   install_x onload_tcpdump "$i_usrbin/onload_tcpdump"
+   install_x onload_iptables "$i_usrbin/onload_iptables"
+   install_x zf_debug "$i_usrbin/zf_debug"
++  sed -i "s@/usr/lib/@$i_lib32/@" "$i_usrbin/zf_debug"
++  sed -i "s@/usr/lib64/@$i_lib64/@" "$i_usrbin/zf_debug"
+   $affinity && {
+     install_x sfcaffinity_config "$i_usrsbin/sfcaffinity_config"
+     install_x sfcaffinity "$i_usrbin/sfcaffinity"
+@@ -693,13 +696,13 @@
+ done
+ 
+ # Where do we put everything?
+-i_usrlibexec="$i_prefix/usr/libexec/onload"
+-i_libexec="$i_prefix/lib/onload"
+-i_sbin="$i_prefix/sbin"
+-i_usrbin="$i_prefix/usr/bin"
+-i_usrsbin="$i_prefix/usr/sbin"
+-i_etc="$i_prefix/etc"
+-i_include="$i_prefix/usr/include"
++"${i_usrlibexec:=$i_prefix/usr/libexec/onload}"
++"${i_libexec:=$i_prefix/lib/onload}"
++"${i_sbin:=$i_prefix/sbin}"
++"${i_usrbin:=$i_prefix/usr/bin}"
++"${i_usrsbin:=$i_prefix/usr/sbin}"
++"${i_etc:=$i_prefix/etc}"
++"${i_include:=$i_prefix/usr/include}"
+ 
+ # look for biarch/multiarch library directories
+ #
+@@ -707,9 +710,9 @@
+ # Something like
+ # i_lib=`ldd $(which lspci) |grep libpci.so |awk -e '{print $3}' | sed -e
+ # 's/\/libpci\.so.*//'`
+-i_lib32="$i_prefix/usr/lib"
+-i_lib64="$i_prefix/usr/lib64"
++"${i_lib32:=$i_prefix/usr/lib}"
++"${i_lib64:=$i_prefix/usr/lib64}"
+ if [ -e /lib/x86_64-linux-gnu/libc.so.6 ]; then
+   # multiarch
+   i_lib64="$i_prefix/usr/lib/x86_64-linux-gnu"
+ 

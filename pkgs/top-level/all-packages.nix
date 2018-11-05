@@ -4530,6 +4530,8 @@ with pkgs;
 
   openobex = callPackage ../tools/bluetooth/openobex { };
 
+  openonload = callPackage ../development/libraries/openonload { };
+
   openresolv = callPackage ../tools/networking/openresolv { };
 
   opensc = callPackage ../tools/security/opensc {
