@@ -10242,6 +10242,8 @@ with pkgs;
   };
   kerberos = libkrb5; # TODO: move to aliases.nix
 
+  knc = callPackage ../tools/networking/knc {};
+
   languageMachines = recurseIntoAttrs (import ../development/libraries/languagemachines/packages.nix { inherit callPackage; });
 
   lasso = callPackage ../development/libraries/lasso { };
