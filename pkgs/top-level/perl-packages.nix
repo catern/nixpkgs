@@ -11530,6 +11530,23 @@ let
      };
   };
 
+  NetServerSSPrefork = buildPerlPackage {
+     name = "Net-Server-SS-PreFork-5fccc0c270";
+     src = fetchFromGitHub {
+       owner = "kazuho";
+       repo = "p5-Net-Server-SS-PreFork";
+       rev = "5fccc0c270e25c65ef634304630af74b48807d21";
+       sha256 = "0z02labw0dd76sdf301bhrmgnsjds0ddsg22138g8ys4az49bxx6";
+     };
+     checkInputs = [ HTTPMessage LWP TestSharedFork HTTPServerSimple TestTCP TestUNIXSock ];
+     buildInputs = [ ModuleInstall ];
+     propagatedBuildInputs = [ NetServer ServerStarter ];
+     meta = {
+       description = "A hot-deployable variant of Net::Server::PreFork";
+       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+     };
+  };
+
   NetSMTPSSL = buildPerlPackage {
     name = "Net-SMTP-SSL-1.04";
     src = fetchurl {
@@ -13950,7 +13967,7 @@ let
       sha256 = "1sbb5rb3vs82rlh1fjkgkcmj5pj62b4y9si4ihh45sl9m8c2qxx5";
     };
     buildInputs = [ LWP ModuleBuildTiny TestRequires TestTCP ];
-    propagatedBuildInputs = [ DataDump HTTPParserXS NetServer Plack ];
+    propagatedBuildInputs = [ DataDump HTTPParserXS NetServer Plack NetServerSSPrefork ];
     doCheck = false; # binds to various TCP ports
     meta = {
       inherit version;
