@@ -16058,6 +16058,22 @@ let
     buildInputs = [ TestSharedFork ];
   };
 
+  TestUNIXSock = buildPerlModule rec {
+    name = "Test-UNIXSock-0.2";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/F/FU/FUJIWARA/${name}.tar.gz";
+      sha256 = "18k95csx2hs7gd29q84r00qkrijp5hkpy4k6jcqsnbjljssyj17n";
+    };
+    # https://github.com/fujiwara/Test-UNIXSock/pull/4
+    patches = [ ../development/perl-modules/Test-UNIXSock-0.2-make-test15-reliable.patch ];
+    meta = {
+      description = "Testing UNIX domain socket program";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+    buildInputs = [ ModuleBuildTiny ];
+    propagatedBuildInputs = [ TestSharedFork TestTCP ];
+  };
+
   TestTime = buildPerlPackage rec {
     name = "Test-Time-0.05";
     src = fetchurl {

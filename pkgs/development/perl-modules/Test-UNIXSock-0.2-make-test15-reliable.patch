@@ -1,0 +1,9 @@
+--- ./t/15_oo_unix.t
++++ ./t/15_oo_unix.t
+@@ -47,4 +47,6 @@ is $res2, "bar\n";
+ note "finalize";
+ print {$sock} "quit\n";
+ 
++$server->stop;
++
+ done_testing;
