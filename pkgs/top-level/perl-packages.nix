@@ -3204,6 +3204,19 @@ let
     buildInputs = [ TestRequires ];
   };
 
+  DangaSocket = buildPerlPackage rec {
+    name = "Danga-Socket-1.61";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BR/BRADFITZ/${name}.tar.gz";
+      sha256 = "0nciapvxnc922ms304af0vavz1kgyr45ard8wc659k9srqar4hwf";
+    };
+    propagatedBuildInputs = [ SysSyscall ];
+    meta = {
+      description = "Event loop and event-driven async socket base class";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   DataClone = buildPerlPackage {
     name = "Data-Clone-0.004";
     src = fetchurl {
@@ -4379,6 +4392,14 @@ let
     src = fetchurl {
       url = "mirror://cpan/authors/id/F/FE/FERREIRA/${name}.tar.gz";
       sha256 = "10jyv9nmv513hs75rls5yx2xn82513xnnhjir3dxiwgb1ykfyvvm";
+    };
+  };
+
+  DevelLeak = buildPerlPackage rec {
+    name = "Devel-Leak-0.03";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/N/NI/NI-S/${name}.tar.gz";
+      sha256 = "0lkj2xwc3lhxv7scl43r8kfmls4am0b98sqf5vmf7d72257w6hkg";
     };
   };
 
@@ -12882,6 +12903,32 @@ let
     };
   };
 
+  public-inbox = buildPerlPackage rec {
+    name = "public-inbox-1.1.0-pre1";
+    src = fetchurl {
+      url = "https://public-inbox.org/releases/${name}.tar.gz";
+      sha256 = "02d0by8z0sjxz4c9viiaay0lyzcqb16b0n1czvk0k89wlrkkf0nh";
+    };
+    patches = [
+      ../development/perl-modules/public-inbox/Makefile-git.patch
+      ../development/perl-modules/public-inbox/v2mda-mkdir.patch
+      ../development/perl-modules/public-inbox/convert-test-config.patch
+      ../development/perl-modules/public-inbox/spawn-test.patch
+    ];
+    checkInputs = [ TestHTTPServerSimple IPCRun ];
+    # many commands use git binaries, and public-inbox-compact uses xapian-compact
+    propagatedBuildInputs = [ pkgs.git pkgs.xapian.out ];
+    buildInputs = [ TimeDate EmailMIME EmailMIMEContentType Encode
+    Plack URI IOCompress DBI DBDSQLite NetServer FilesysNotifySimple
+    PlackMiddlewareReverseProxy PlackMiddlewareDeflater SearchXapian
+    DangaSocket
+    # InlineC is used *at runtime* to compile some acceleration parts.
+    # TODO we should add an option upstream to use InlineC at build
+    # time instead
+    InlineC
+    ];
+  };
+
   PadWalker = buildPerlPackage rec {
     name = "PadWalker-2.3";
     src = fetchurl {
@@ -13584,6 +13631,24 @@ let
     };
     meta = {
       description = "Act on upper scopes";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  SearchXapian = buildPerlPackage rec {
+    name = "Search-Xapian-1.2.25.2";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/O/OL/OLLY/${name}.tar.gz";
+      sha256 = "0hpa8gi38j0ibq8af6dy69lm1bl5jnq76nsa69dbrzbr88l5m594";
+    };
+    patches = [
+      ../development/perl-modules/Search-Xapian-Makefile.patch
+    ];
+    checkInputs = [ DevelLeak ];
+    # for xapian-config
+    nativeBuildInputs = [ pkgs.xapian ];
+    meta = {
+      description = "Perl XS frontend to the Xapian C++ search library";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -14579,6 +14644,18 @@ let
     doCheck = !stdenv.isAarch64; # it hangs on Aarch64
     meta = {
       description = "Perl extension for Consistent Signal Handling";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  SysSyscall = buildPerlPackage rec {
+    name = "Sys-Syscall-0.25";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BR/BRADFITZ/${name}.tar.gz";
+      sha256 = "1r8k4q04dhs191zgdfgiagvbra770hx0bm6x24jsykxn0c6ghi8y";
+    };
+    meta = {
+      description = "access system calls that Perl doesn't normally provide access to";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
